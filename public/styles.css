@@ -99,6 +99,116 @@
 .account-dialog-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:10px}
 @media(max-width:560px){.account-dialog{padding:22px 18px}.account-dialog-actions{flex-direction:column-reverse}.account-dialog-actions .button{width:100%}}
 
+/* Leitura e toque confortáveis em celulares. */
+@media(max-width:560px){
+  body{font-size:16px;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+  .eyebrow{font-size:11px;letter-spacing:.13em}
+  .auth-card{padding:28px 20px;border-radius:20px}
+  .auth-intro{margin:36px 0 24px}
+  .auth-intro h1{font-size:33px;line-height:1.18}
+  .auth-intro>p:last-child,.subheading{font-size:15px;line-height:1.6}
+  .auth-switch{gap:5px;padding:4px}
+  .auth-tab,.view-tab{min-height:46px;font-size:14px;line-height:1.3}
+  .form-stack{gap:11px}
+  .form-stack label{font-size:14px}
+  .form-stack input,.form-stack select{height:52px;font-size:16px}
+  .field input{height:50px;font-size:16px}
+  .field>span:first-child{font-size:13px;line-height:1.35}
+  .field-help,.privacy-note{font-size:12px;line-height:1.55}
+  .button{min-height:50px;font-size:15px;padding:0 16px}
+  .form-message{font-size:13px;line-height:1.45}
+  .install-link{min-height:44px;font-size:13px}
+  .topbar{min-height:64px;height:auto;padding:10px 14px;gap:8px;flex-wrap:wrap}
+  .topbar-right{margin-left:auto;gap:5px;flex-wrap:wrap;justify-content:flex-end}
+  .user-email{display:none}
+  .install-topbar{min-height:40px;padding:0 9px;font-size:12px}
+  .button-danger-quiet,.button-quiet{min-height:40px;padding:0 8px;font-size:12px}
+  .main-content{width:calc(100% - 24px);margin:24px auto 38px}
+  .welcome-row{gap:8px;margin-bottom:24px}
+  .welcome-row h1{font-size:34px;line-height:1.18}
+  .time-chip{font-size:12px;padding:9px 10px}
+  .view-tabs{gap:4px;padding:4px}
+  .view-tab{padding:9px 5px;font-size:12px}
+  .diary-panel{padding:20px 16px}
+  .panel-heading{gap:14px;margin-bottom:20px}
+  .panel-heading h2,.week-heading h2{font-size:27px;line-height:1.2}
+  .date-picker{gap:7px;font-size:12px}
+  .date-control{width:164px}
+  .date-control input{width:164px;height:46px;font-size:16px}
+  .date-help{grid-column:1/-1;max-width:100%;font-size:12px;line-height:1.5}
+  .fields-grid{gap:16px 12px}
+  .input-suffix em{top:16px;font-size:12px}
+  .quality-row{gap:13px;margin-top:22px;padding-top:18px}
+  .quality-row strong{font-size:14px}
+  .quality-row small{font-size:12px}
+  .quality-picker{gap:8px}
+  .quality-choice{width:42px;height:42px;font-size:16px}
+  .optional-details{margin-top:19px;padding-top:16px}
+  .optional-details summary{font-size:13px;line-height:1.45}
+  .optional-grid{margin-top:17px}
+  .habit-list{gap:13px;padding:15px}
+  .habit-list legend{font-size:13px}
+  .habit-list legend span,.habit-list label{font-size:12px;line-height:1.5}
+  .habit-list input,.week-zero-habit input,.safety-list input{width:18px;height:18px}
+  .week-zero-habit{font-size:12px;line-height:1.5;padding:13px}
+  .estimate-card{align-items:flex-start;padding:15px}
+  .estimate-copy{font-size:13px;line-height:1.5}
+  .estimate-card strong{font-size:18px}
+  .estimate-card small{font-size:11px;line-height:1.45}
+  .form-footer{gap:12px;margin-top:18px;padding-top:16px}
+  .form-footer .button{min-height:52px}
+  .side-panel{padding:22px 19px}
+  .side-panel h3{font-size:21px}
+  .side-panel>p{font-size:14px;line-height:1.65}
+  .side-panel .text-link{font-size:13px;line-height:1.5}
+  .week-heading{gap:12px;margin-bottom:18px}
+  .week-heading h2{font-size:27px}
+  .week-heading .subheading{font-size:14px}
+  .count-pill{font-size:11px;padding:9px 11px}
+  .metrics-grid{gap:11px;margin-bottom:13px}
+  .metric-card{min-height:112px;padding:17px}
+  .metric-label{font-size:13px}
+  .metric-card strong{font-size:28px}
+  .metric-card small{font-size:11px}
+  .chart-panel,.history-panel{padding:19px 15px}
+  .chart-title h3{font-size:18px}
+  .chart-title p,.chart-key{font-size:12px;line-height:1.45}
+  .week-chart{height:190px;gap:4px;margin-top:22px}
+  .bar-value{font-size:10px}
+  .bar-label{font-size:11px}
+  .history-list li{gap:12px;padding:14px 2px}
+  .history-list li strong{font-size:14px}
+  .history-list li small{font-size:12px;line-height:1.45}
+  .week-empty{font-size:14px}
+  .note-panel{gap:12px;padding:16px}
+  .note-panel p{font-size:13px;line-height:1.6}
+  .program-panel{padding:20px 17px}
+  .program-panel h3{font-size:22px;line-height:1.3}
+  .program-copy{font-size:14px;line-height:1.6}
+  .safety-list{gap:14px;padding:15px}
+  .safety-list legend{font-size:14px}
+  .safety-list label{gap:11px;font-size:13px;line-height:1.55}
+  .urgent-note{font-size:13px;line-height:1.6}
+  .program-assessment{padding:15px}
+  .program-assessment>p,.assessment-row{font-size:13px;line-height:1.5}
+  .assessment-choices{gap:7px}
+  .assessment-choices label{width:34px;height:34px;font-size:12px}
+  .program-tools{padding:15px}
+  .window-card{padding:16px}
+  .program-rules{padding:16px}
+  .program-rules ol{font-size:13px;line-height:1.55}
+  .weekly-review{padding:16px}
+  .weekly-review h4,.program-rules h4,.window-card h4{font-size:18px}
+  .weekly-review select{min-height:48px;font-size:16px}
+  .app-footer{padding:20px 16px calc(20px + env(safe-area-inset-bottom));font-size:12px;line-height:1.5}
+  .pwa-dialog{padding:23px 20px}
+  .pwa-dialog h2{font-size:25px}
+  .pwa-description,.ios-install-steps p,.android-install-help{font-size:14px;line-height:1.6}
+  .calendar-day{font-size:14px}
+  .calendar-weekday{height:30px;font-size:12px}
+  .calendar-footer button{font-size:13px}
+}
+
 /* Instalação PWA */
 .install-link{display:flex;justify-content:center;align-items:center;gap:7px;width:100%;margin-top:12px;padding:9px;border:0;border-radius:9px;background:transparent;color:#536f7e;font-size:12px;font-weight:700}
 .install-link:hover{background:#edf3f4;color:var(--navy)}
