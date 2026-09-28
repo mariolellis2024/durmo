@@ -5,9 +5,8 @@
       "data": {
         "serviceName": "durmo",
         "source": {
-          "type": "github",
-          "owner": "mariolellis2024",
-          "repo": "durmo",
+          "type": "git",
+          "repo": "https://github.com/mariolellis2024/durmo.git",
           "ref": "main",
           "path": "/"
         },
@@ -17,14 +16,6 @@
           "command": null,
           "zeroDowntime": true
         },
-        "domains": [
-          {
-            "host": "$(EASYPANEL_DOMAIN)",
-            "https": true,
-            "port": 3000,
-            "path": "/"
-          }
-        ],
         "mounts": [],
         "ports": []
       }

@@ -16,7 +16,7 @@ Na primeira inicialização, o app cria as tabelas do diário e das contas no ba
 
 ## EasyPanel
 
-O `easypanel-schema.json` configura o código diretamente do repositório GitHub na branch `main` e cria o app DURMO e um PostgreSQL 16 no projeto EasyPanel em que você está. O formato segue o schema de serviços do exemplo funcional: cada item traz `type` e `data`, sem repetir `projectName` dentro dos serviços. O projeto não precisa de MinIO. Antes de importar, substitua `DEFINIR_SENHA_FORTE_ANTES_DE_IMPORTAR` nas duas linhas pela mesma senha; não publique a senha no GitHub. O EasyPanel constrói o app a partir do código Git.
+O `easypanel-schema.json` cria o app DURMO com origem Git (`https://github.com/mariolellis2024/durmo.git`, branch `main`) e um PostgreSQL 16 no projeto EasyPanel em que você está. O formato segue a lista de serviços do schema funcional do Alanis: cada item tem `type` e `data`, sem `projectName` dentro de cada serviço. Não inclui domínio no schema; depois de criar os serviços, configure `app.durmo.com.br` no serviço `durmo`, apontando para a porta interna `3000`, com HTTPS. O projeto não precisa de MinIO. Antes de importar, substitua `DEFINIR_SENHA_FORTE_ANTES_DE_IMPORTAR` nas duas linhas pela mesma senha; não publique a senha no GitHub. O EasyPanel constrói o app a partir do repositório Git.
 
 ## Dados do app
 
