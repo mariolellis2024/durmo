@@ -14,6 +14,12 @@ Requisitos: Node.js 22 ou superior e PostgreSQL 16.
 
 Na primeira inicialização, o app cria as tabelas do diário e das contas no banco informado.
 
+## Instalar no celular
+
+O DURMO pode ser instalado como PWA. No Android, o aviso usa a opção nativa de instalação do navegador quando disponível e mostra os passos pelo menu do Chrome quando o navegador ainda não liberou o botão nativo. No iPhone e iPad, o aviso orienta a abrir Compartilhar no Safari e escolher “Adicionar à Tela de Início”. O app não exibe o aviso quando já está aberto como app instalado; “Agora não” oculta o aviso por sete dias, e a pessoa pode abri-lo novamente pelo botão de instalação.
+
+O service worker mantém os arquivos da interface disponíveis para abrir a estrutura do app sem conexão. As chamadas da conta, do diário e do banco de dados continuam exigindo internet; respostas pessoais da API não são guardadas no cache offline.
+
 ## EasyPanel
 
 O `easypanel-schema.json` cria o app DURMO com origem Git (`https://github.com/mariolellis2024/durmo.git`, branch `main`) e um PostgreSQL 16 no projeto EasyPanel em que você está. O formato segue a lista de serviços do schema funcional do Alanis: cada item tem `type` e `data`, sem `projectName` dentro de cada serviço. Não inclui domínio no schema; depois de criar os serviços, configure `app.durmo.com.br` no serviço `durmo`, apontando para a porta interna `3000`, com HTTPS. O projeto não precisa de MinIO. Antes de importar, substitua `DEFINIR_SENHA_FORTE_ANTES_DE_IMPORTAR` nas duas linhas pela mesma senha; não publique a senha no GitHub. O EasyPanel constrói o app a partir do repositório Git.

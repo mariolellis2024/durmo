@@ -98,3 +98,27 @@
 .account-dialog>p:not(.form-message){margin:0 0 18px;color:var(--muted);font-size:13px;line-height:1.6}
 .account-dialog-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:10px}
 @media(max-width:560px){.account-dialog{padding:22px 18px}.account-dialog-actions{flex-direction:column-reverse}.account-dialog-actions .button{width:100%}}
+
+/* Instalação PWA */
+.install-link{display:flex;justify-content:center;align-items:center;gap:7px;width:100%;margin-top:12px;padding:9px;border:0;border-radius:9px;background:transparent;color:#536f7e;font-size:12px;font-weight:700}
+.install-link:hover{background:#edf3f4;color:var(--navy)}
+.install-link span{color:#b58d25;font-size:16px}
+.install-topbar{min-height:36px;padding:0 12px;font-size:11px}
+.pwa-dialog{position:fixed;width:min(410px,calc(100vw - 32px));max-height:calc(100dvh - 32px);overflow:auto;margin:auto;padding:28px;border:1px solid rgba(25,48,71,.08);border-radius:22px;background:var(--white);color:var(--ink);box-shadow:0 24px 80px rgba(12,31,45,.24)}
+.pwa-dialog::backdrop{background:rgba(15,32,45,.55);backdrop-filter:blur(3px)}
+.pwa-dialog-brand{display:flex;align-items:center;gap:10px;margin-bottom:25px;color:var(--navy);font-size:14px;font-weight:800;letter-spacing:.08em}
+.pwa-dialog-brand img{display:block;border-radius:13px}
+.pwa-close{position:absolute;top:19px;right:19px;display:grid;place-items:center;width:34px;height:34px;border:0;border-radius:50%;background:#eef2f1;color:#607580;font-size:24px;line-height:1}
+.pwa-dialog>.eyebrow{margin-bottom:7px}
+.pwa-dialog h2{margin:0 0 10px;color:var(--navy);font:500 26px/1.2 'Playfair Display',Georgia,serif}
+.pwa-description{margin:0;color:#667984;font-size:13px;line-height:1.65}
+.ios-install-steps{display:flex;align-items:center;gap:12px;margin:19px 0 4px;padding:13px;border-radius:13px;background:#edf3f4}
+.ios-install-steps p{margin:0;color:#536876;font-size:12px;line-height:1.55}
+.ios-install-steps strong{color:var(--navy)}
+.share-symbol{display:grid;place-items:center;width:40px;height:40px;flex:none;border-radius:12px;background:#fff;color:#365c79}
+.share-symbol svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.android-install-help{margin:17px 0 2px;padding:13px;border-radius:12px;background:#edf3f4;color:#536876;font-size:12px;line-height:1.55}
+.pwa-actions{display:grid;gap:6px;margin-top:20px}
+.pwa-actions .button{width:100%}
+.pwa-actions .button-quiet{color:#73838c}
+@media(max-width:560px){.pwa-dialog{padding:23px 20px;border-radius:19px}.pwa-dialog-brand{margin-bottom:22px}.pwa-dialog h2{font-size:24px}}

@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="#193047">
     <meta name="description" content="Um jeito simples de anotar seu sono e acompanhar sua semana.">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="DURMO">
+    <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
     <link rel="manifest" href="/manifest.webmanifest">
     <link rel="stylesheet" href="/styles.css">
     <title>DURMO</title>
@@ -34,6 +40,7 @@
           <button id="authSubmit" class="button button-primary" type="submit">Entrar</button>
           <p id="authMessage" class="form-message" role="status"></p>
         </form>
+        <button id="openInstallPrompt" class="install-link" type="button">Instalar o DURMO no celular <span aria-hidden="true">→</span></button>
         <p class="privacy-note"><span aria-hidden="true">⌑</span> Seu diário é privado e fica associado à sua conta.</p>
       </section>
       <aside class="auth-aside">
@@ -69,6 +76,7 @@
         </a>
         <div class="topbar-right">
           <span id="userEmail" class="user-email"></span>
+          <button id="installAppTopbar" class="button button-outline install-topbar hidden" type="button">Instalar app</button>
           <button id="deleteAccountButton" class="button button-danger-quiet" type="button">Excluir conta</button>
           <button id="logoutButton" class="button button-quiet" type="button">Sair</button>
         </div>
@@ -250,8 +258,26 @@
       <footer class="app-footer">DURMO · Registre com calma, uma noite de cada vez.</footer>
     </div>
 
+    <dialog id="pwaInstallDialog" class="pwa-dialog" aria-labelledby="pwaInstallTitle" aria-describedby="pwaInstallDescription">
+      <div class="pwa-dialog-brand"><img src="/icons/icon-192.png" alt="" width="48" height="48"><span>DURMO</span></div>
+      <button id="closeInstallPrompt" class="pwa-close" type="button" aria-label="Fechar">×</button>
+      <p class="eyebrow">SEU DIÁRIO, SEMPRE À MÃO</p>
+      <h2 id="pwaInstallTitle">Leve o DURMO com você.</h2>
+      <p id="pwaInstallDescription" class="pwa-description"></p>
+      <div id="iosInstallSteps" class="ios-install-steps hidden">
+        <span class="share-symbol" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 15V3m0 0L7.5 7.5M12 3l4.5 4.5M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"></path></svg></span>
+        <p>No Safari, toque em <strong>Compartilhar</strong> e depois em <strong>Adicionar à Tela de Início</strong>.</p>
+      </div>
+      <p id="androidInstallHelp" class="android-install-help hidden"></p>
+      <div class="pwa-actions">
+        <button id="installAppButton" class="button button-primary" type="button">Instalar app</button>
+        <button id="dismissInstallPrompt" class="button button-quiet" type="button">Agora não</button>
+      </div>
+    </dialog>
+
     <script src="/sleep-math.js" defer></script>
     <script src="/sleep-date.js" defer></script>
     <script src="/app.js" defer></script>
+    <script src="/pwa.js" defer></script>
   </body>
 </html>
