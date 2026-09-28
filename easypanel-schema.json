@@ -3,7 +3,6 @@
     {
       "type": "app",
       "data": {
-        "projectName": "durmo",
         "serviceName": "durmo",
         "source": {
           "type": "github",
@@ -33,7 +32,6 @@
     {
       "type": "postgres",
       "data": {
-        "projectName": "durmo",
         "serviceName": "durmo-db",
         "image": "postgres:16-alpine",
         "password": "DEFINIR_SENHA_FORTE_ANTES_DE_IMPORTAR"
