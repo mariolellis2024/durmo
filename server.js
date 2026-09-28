@@ -166,9 +166,9 @@ app.put('/api/entries/:date', requireUser, async (req, res) => {
      ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19)
      ON CONFLICT (user_id, night_date) DO NOTHING
      RETURNING id, night_date`,
-    [id, req.user.id, date, data.wentToBed, data.lightsOut, data.sleepLatencyMin,
+    [id, req.user.id, date, data.wentToBed, data.wentToBed, data.sleepLatencyMin,
       data.awakenings, data.awakeDuringNightMin, data.finalWake, data.gotOutOfBed,
-      data.quality, data.napsMin || 0, data.caffeineLastTime || null,
+      data.quality, 0, data.caffeineLastTime || null,
       cleanNote(data.alcoholNotes), cleanNote(data.alcoholDoses), data.alcoholLastTime || null,
       data.cigaretteLastTime || null, cleanNote(data.medicationNotes), cleanHabits(data.habits)]
   );
@@ -497,17 +497,16 @@ function clearAttempts(req, email) {
 }
 
 function isValidEntry(data) {
-  const requiredTimes = ['wentToBed', 'lightsOut', 'finalWake', 'gotOutOfBed'];
+  const requiredTimes = ['wentToBed', 'finalWake', 'gotOutOfBed'];
   if (!requiredTimes.every((key) => /^([01]\d|2[0-3]):[0-5]\d$/.test(String(data[key] || '')))) return false;
   const optionalTimes = ['caffeineLastTime', 'alcoholLastTime', 'cigaretteLastTime'];
   if (!optionalTimes.every((key) => !data[key] || /^([01]\d|2[0-3]):[0-5]\d$/.test(String(data[key])))) return false;
-  const numbers = [data.sleepLatencyMin, data.awakenings, data.awakeDuringNightMin, data.quality, data.napsMin || 0];
+  const numbers = [data.sleepLatencyMin, data.awakenings, data.awakeDuringNightMin, data.quality];
   if (!numbers.every((n) => Number.isInteger(Number(n)))) return false;
   return Number(data.sleepLatencyMin) >= 0 && Number(data.sleepLatencyMin) <= 720
     && Number(data.awakenings) >= 0 && Number(data.awakenings) <= 50
     && Number(data.awakeDuringNightMin) >= 0 && Number(data.awakeDuringNightMin) <= 720
-    && Number(data.quality) >= 1 && Number(data.quality) <= 5
-    && Number(data.napsMin || 0) >= 0 && Number(data.napsMin || 0) <= 720;
+    && Number(data.quality) >= 1 && Number(data.quality) <= 5;
 }
 
 const SAFETY_FLAGS = new Set([
@@ -554,7 +553,6 @@ function dateOffset(value, days) {
 function sleepMetrics(entry) {
   return calculateNight({
     wentToBed: entry.went_to_bed,
-    lightsOut: entry.lights_out,
     sleepLatencyMin: entry.sleep_latency_min,
     awakeDuringNightMin: entry.awake_during_night_min,
     finalWake: entry.final_wake,

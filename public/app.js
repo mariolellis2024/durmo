@@ -51,10 +51,10 @@ document.querySelector('#deleteAccountButton').addEventListener('click', () => {
 document.querySelector('#cancelDeleteAccount').addEventListener('click', () => accountDialog.close());
 document.querySelector('#confirmDeleteAccount').addEventListener('click', deleteAccount);
 
-document.querySelectorAll('#wentToBed,#lightsOut,#sleepLatencyMin,#awakeDuringNightMin,#finalWake,#gotOutOfBed').forEach((input) => {
+document.querySelectorAll('#wentToBed,#sleepLatencyMin,#awakeDuringNightMin,#finalWake,#gotOutOfBed').forEach((input) => {
   input.addEventListener('input', updateEstimate);
 });
-document.querySelectorAll('#awakenings,#napsMin').forEach((input) => input.addEventListener('input', updateEstimate));
+document.querySelector('#awakenings').addEventListener('input', updateEstimate);
 
 for (let value = 1; value <= 5; value += 1) {
   const button = document.createElement('button');
@@ -624,14 +624,12 @@ function readEntryForm() {
   const value = (id) => document.querySelector(`#${id}`).value;
   return {
     wentToBed: value('wentToBed'),
-    lightsOut: value('lightsOut'),
     sleepLatencyMin: Number(value('sleepLatencyMin')),
     awakenings: Number(value('awakenings')),
     awakeDuringNightMin: Number(value('awakeDuringNightMin')),
     finalWake: value('finalWake'),
     gotOutOfBed: value('gotOutOfBed'),
     quality: selectedQuality,
-    napsMin: Number(value('napsMin') || 0),
     caffeineLastTime: value('caffeineLastTime'),
     alcoholDoses: value('alcoholDoses'),
     alcoholLastTime: value('alcoholLastTime'),
@@ -685,15 +683,13 @@ function setEntryMessage(message, success = false) {
 function updateEstimate() {
   const bed = document.querySelector('#wentToBed').value;
   const rise = document.querySelector('#gotOutOfBed').value;
-  const lightsOut = document.querySelector('#lightsOut').value;
   const finalWake = document.querySelector('#finalWake').value;
-  if (!bed || !lightsOut || !finalWake || !rise) {
+  if (!bed || !finalWake || !rise) {
     estimate.innerHTML = '<span class="estimate-copy">Preencha os horários para ver a estimativa.</span>';
     return;
   }
   const night = calculateNight({
     wentToBed: bed,
-    lightsOut,
     sleepLatencyMin: Number(document.querySelector('#sleepLatencyMin').value || 0),
     awakeDuringNightMin: Number(document.querySelector('#awakeDuringNightMin').value || 0),
     finalWake,
@@ -711,7 +707,6 @@ function renderWeek() {
     if (!entry) return { date, bed: 0, sleep: 0, hasEntry: false };
     const { inBed, asleep } = calculateNight({
       wentToBed: timePart(entry.went_to_bed),
-      lightsOut: timePart(entry.lights_out),
       sleepLatencyMin: entry.sleep_latency_min,
       awakeDuringNightMin: entry.awake_during_night_min,
       finalWake: timePart(entry.final_wake),
@@ -753,7 +748,6 @@ function renderHistory() {
   historyEntries.forEach((entry) => {
     const { asleep } = calculateNight({
       wentToBed: timePart(entry.went_to_bed),
-      lightsOut: timePart(entry.lights_out),
       sleepLatencyMin: entry.sleep_latency_min,
       awakeDuringNightMin: entry.awake_during_night_min,
       finalWake: timePart(entry.final_wake),
