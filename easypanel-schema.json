@@ -1,0 +1,41 @@
+{
+  "services": [
+    {
+      "type": "app",
+      "data": {
+        "serviceName": "durmo",
+        "source": {
+          "type": "github",
+          "owner": "mariolellis2024",
+          "repo": "sono",
+          "ref": "main",
+          "path": "/"
+        },
+        "env": "NODE_ENV=production\nPORT=3000\nDATABASE_URL=postgresql://postgres:DEFINIR_SENHA_FORTE_ANTES_DE_IMPORTAR@$(PROJECT_NAME)_durmo-db:5432/$(PROJECT_NAME)",
+        "deploy": {
+          "replicas": 1,
+          "command": null,
+          "zeroDowntime": true
+        },
+        "domains": [
+          {
+            "host": "$(EASYPANEL_DOMAIN)",
+            "https": true,
+            "port": 3000,
+            "path": "/"
+          }
+        ],
+        "mounts": [],
+        "ports": []
+      }
+    },
+    {
+      "type": "postgres",
+      "data": {
+        "serviceName": "durmo-db",
+        "image": "postgres:16-alpine",
+        "password": "DEFINIR_SENHA_FORTE_ANTES_DE_IMPORTAR"
+      }
+    }
+  ]
+}

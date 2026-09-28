@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#193047">
+    <meta name="description" content="Um jeito simples de anotar seu sono e acompanhar sua semana.">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="stylesheet" href="/styles.css">
+    <title>DURMO</title>
+  </head>
+  <body>
+    <div id="authView" class="auth-wrap">
+      <section class="auth-card" aria-labelledby="authTitle">
+        <a class="brand" href="/" aria-label="DURMO - início">
+          <span class="brand-mark" aria-hidden="true">☾</span>
+          <span>DURMO</span>
+        </a>
+        <div class="auth-intro">
+          <p class="eyebrow">Seu diário do sono</p>
+          <h1 id="authTitle">Um passo de cada vez.</h1>
+          <p>Registre sua noite pela manhã e acompanhe seu progresso com tranquilidade.</p>
+        </div>
+        <div class="auth-switch" role="tablist" aria-label="Acesso">
+          <button class="auth-tab active" data-mode="login" role="tab" aria-selected="true">Entrar</button>
+          <button class="auth-tab" data-mode="register" role="tab" aria-selected="false">Criar conta</button>
+        </div>
+        <form id="authForm" class="form-stack">
+          <label for="authEmail">E-mail</label>
+          <input id="authEmail" name="email" type="email" autocomplete="email" placeholder="voce@email.com" required>
+          <label for="authPin">PIN de 6 números</label>
+          <input id="authPin" name="pin" type="password" inputmode="numeric" autocomplete="current-password" pattern="[0-9]{6}" maxlength="6" placeholder="••••••" aria-describedby="pinHelp" required>
+          <p id="pinHelp" class="field-help">Use seu PIN para acessar suas anotações.</p>
+          <button id="authSubmit" class="button button-primary" type="submit">Entrar</button>
+          <p id="authMessage" class="form-message" role="status"></p>
+        </form>
+        <p class="privacy-note"><span aria-hidden="true">⌑</span> Seu diário é privado e fica associado à sua conta.</p>
+      </section>
+      <aside class="auth-aside">
+        <div class="moon-art" aria-hidden="true"><span>☾</span><i></i><b></b></div>
+        <p class="aside-quote">“Seu trabalho não é fazer o sono aparecer. É criar as condições para ele voltar.”</p>
+        <p class="aside-caption">Pequenos registros ajudam a enxergar padrões.</p>
+      </aside>
+    </div>
+
+    <div id="profileView" class="auth-wrap hidden">
+      <section class="auth-card" aria-labelledby="profileTitle">
+        <a class="brand" href="#" aria-label="DURMO"><span class="brand-mark" aria-hidden="true">☾</span><span>DURMO</span></a>
+        <div class="auth-intro"><p class="eyebrow">SEU PERFIL</p><h1 id="profileTitle">Vamos nos conhecer?</h1><p>Conte um pouco sobre você para deixarmos o DURMO mais pessoal.</p></div>
+        <form id="profileForm" class="form-stack">
+          <label for="profileFirstName">Como prefere ser chamado(a)?</label>
+          <input id="profileFirstName" name="firstName" type="text" autocomplete="given-name" maxlength="60" placeholder="Seu primeiro nome" required>
+          <label for="profileBirthDate">Data de nascimento</label>
+          <input id="profileBirthDate" name="birthDate" type="text" inputmode="numeric" autocomplete="bday" placeholder="dd/mm/aaaa" maxlength="10" required>
+          <label for="profileSex">Sexo</label>
+          <select id="profileSex" name="sex" required><option value="">Selecione</option><option value="female">Feminino</option><option value="male">Masculino</option><option value="intersex">Intersexo</option><option value="prefer_not_to_say">Prefiro não informar</option></select>
+          <p class="field-help">A data de nascimento ajuda o DURMO a aplicar a faixa etária prevista no guia. Você escolhe se deseja informar o sexo.</p>
+          <button id="profileSubmit" class="button button-primary" type="submit">Continuar</button>
+          <p id="profileMessage" class="form-message" role="status"></p>
+        </form>
+      </section>
+      <aside class="auth-aside"><div class="moon-art" aria-hidden="true"><span>☾</span><i></i><b></b></div><p class="aside-quote">“Pequenos registros ajudam a enxergar padrões.”</p></aside>
+    </div>
+
+    <div id="appView" class="app-shell hidden">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="DURMO">
+          <span class="brand-mark" aria-hidden="true">☾</span><span>DURMO</span>
+        </a>
+        <div class="topbar-right">
+          <span id="userEmail" class="user-email"></span>
+          <button id="deleteAccountButton" class="button button-danger-quiet" type="button">Excluir conta</button>
+          <button id="logoutButton" class="button button-quiet" type="button">Sair</button>
+        </div>
+      </header>
+      <dialog id="accountDialog" class="account-dialog" aria-labelledby="accountDialogTitle">
+        <h2 id="accountDialogTitle">Excluir conta e registros?</h2>
+        <p>Essa ação apaga seu perfil, todas as noites registradas e o plano de 4 semanas. Não será possível recuperar esses dados.</p>
+        <p id="accountDeleteMessage" class="form-message" role="status"></p>
+        <div class="account-dialog-actions">
+          <button id="cancelDeleteAccount" class="button button-outline" type="button">Manter minha conta</button>
+          <button id="confirmDeleteAccount" class="button button-danger" type="button">Excluir definitivamente</button>
+        </div>
+      </dialog>
+      <main class="main-content">
+        <div class="welcome-row">
+          <div>
+            <p class="eyebrow">SEU ESPAÇO DE SONO</p>
+            <h1>Bom dia, <span id="welcomeName"></span> <span class="sun-icon" aria-hidden="true">☀</span></h1>
+            <p class="subheading">Como foi sua noite? Um palpite já ajuda.</p>
+          </div>
+          <div class="time-chip"><span aria-hidden="true">◷</span> Leva 2 min</div>
+        </div>
+
+        <nav class="view-tabs" aria-label="Seções do app">
+          <button class="view-tab active" data-view="diary">Meu diário</button>
+          <button class="view-tab" data-view="week">Resumo da semana</button>
+          <button class="view-tab" data-view="plan">Plano de 4 semanas</button>
+        </nav>
+
+        <section id="diaryView" class="content-grid">
+          <form id="entryForm" class="panel diary-panel">
+            <div class="panel-heading">
+              <div><p class="eyebrow">ANOTAÇÃO DA MANHÃ</p><h2>Registre sua noite</h2></div>
+              <div class="date-picker">
+                <label for="nightDate">Noite de</label>
+                <div class="date-control">
+                  <input id="nightDate" type="text" inputmode="numeric" autocomplete="off" placeholder="dd/mm/aaaa" maxlength="10" aria-haspopup="dialog" aria-expanded="false" aria-controls="calendarPopover" required>
+                  <button id="calendarToggle" class="calendar-toggle" type="button" aria-label="Abrir calendário" aria-expanded="false" aria-controls="calendarPopover">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="16" rx="2"></rect><path d="M7.5 3v4M16.5 3v4M4 9h16"></path></svg>
+                  </button>
+                  <div id="calendarPopover" class="calendar-popover hidden" role="dialog" aria-label="Escolher data">
+                    <div class="calendar-header">
+                      <button id="calendarMonth" class="calendar-month" type="button" aria-label="Escolher mês"></button>
+                      <div class="calendar-nav">
+                        <button id="calendarPrev" type="button" aria-label="Mês anterior">‹</button>
+                        <button id="calendarNext" type="button" aria-label="Próximo mês">›</button>
+                      </div>
+                    </div>
+                    <div id="calendarGrid" class="calendar-grid" role="grid" aria-label="Dias do mês"></div>
+                    <p class="calendar-legend"><span aria-hidden="true">✓</span> Noite já registrada</p>
+                    <div class="calendar-footer"><button id="calendarYesterday" type="button">Noite anterior</button><button id="calendarToday" type="button">Hoje</button></div>
+                  </div>
+                </div>
+                <small class="date-help">Marque o dia em que a noite começou. Se deitou depois da meia-noite, registre a data do dia anterior.</small>
+              </div>
+            </div>
+            <div class="fields-grid">
+              <label class="field"><span>Deitei às</span><input id="wentToBed" type="time" required></label>
+              <label class="field"><span>Apaguei a luz às</span><input id="lightsOut" type="time" required></label>
+              <label class="field"><span>Demorei para dormir</span><span class="input-suffix"><input id="sleepLatencyMin" type="number" min="0" max="720" required><em>min</em></span></label>
+              <label class="field"><span>Quantas vezes acordei?</span><input id="awakenings" type="number" min="0" max="50" required></label>
+              <label class="field"><span>Fiquei acordado(a) à noite</span><span class="input-suffix"><input id="awakeDuringNightMin" type="number" min="0" max="720" required><em>min</em></span></label>
+              <label class="field"><span>Acordei pela última vez às</span><input id="finalWake" type="time" required></label>
+              <label class="field"><span>Saí da cama às</span><input id="gotOutOfBed" type="time" required></label>
+              <label class="field"><span>Cochilos durante o dia</span><span class="input-suffix"><input id="napsMin" type="number" min="0" max="720"><em>min</em></span></label>
+            </div>
+            <div class="quality-row">
+              <div><strong>Qualidade do sono</strong><small>1 = ruim · 5 = ótima</small></div>
+              <div id="qualityPicker" class="quality-picker" role="radiogroup" aria-label="Qualidade do sono"></div>
+            </div>
+            <details class="optional-details">
+              <summary>Adicionar outros detalhes <span>opcional</span></summary>
+              <div class="fields-grid optional-grid">
+                <label class="field"><span>Último café ou cafeína</span><input id="caffeineLastTime" type="time"></label>
+                <label class="field"><span>Álcool: doses</span><input id="alcoholDoses" type="text" maxlength="80" placeholder="Ex.: 2 taças"></label>
+                <label class="field"><span>Última bebida alcoólica</span><input id="alcoholLastTime" type="time"></label>
+                <label class="field"><span>Último cigarro</span><input id="cigaretteLastTime" type="time"></label>
+                <label class="field"><span>Remédio para dormir</span><input id="medicationNotes" type="text" maxlength="300" placeholder="Nome, dose e horário"></label>
+              </div>
+              <fieldset class="habit-list">
+                <legend>Hábitos do dia <span>da Semana 1 em diante</span></legend>
+                <label><input type="checkbox" name="habit" value="wokeFixedTime"> Acordei no horário combinado</label>
+                <label><input type="checkbox" name="habit" value="bedWhenSleepy"> Deitei na hora combinada e com sono</label>
+                <label><input type="checkbox" name="habit" value="leftBedWhenAwake"> Saí da cama quando estava sem sono</label>
+                <label><input type="checkbox" name="habit" value="noNap"> Não cochilei</label>
+                <label><input type="checkbox" name="habit" value="morningLight"> Peguei luz pela manhã</label>
+              </fieldset>
+              <label class="week-zero-habit"><input type="checkbox" name="habit" value="keptRoutine"> <span><strong>Semana 0</strong><small>Mantive minha rotina normal</small></span></label>
+            </details>
+            <div id="sleepEstimate" class="estimate-card" aria-live="polite"></div>
+            <div class="form-footer">
+              <p id="entryMessage" class="form-message" role="status"></p>
+              <button class="button button-primary" type="submit">Salvar noite <span aria-hidden="true">→</span></button>
+            </div>
+          </form>
+          <aside class="panel side-panel">
+            <div class="side-icon" aria-hidden="true">✦</div>
+            <h3>Sem buscar perfeição</h3>
+            <p>Preencha pela manhã, de preferência até uma hora depois de levantar. Horários aproximados já servem.</p>
+            <div class="side-rule"></div>
+            <p class="side-tip"><strong>Dica:</strong> durante a noite, evite olhar o relógio. Um palpite de manhã basta.</p>
+            <a href="#" id="weekShortcut" class="text-link">Ver meu resumo semanal <span aria-hidden="true">→</span></a>
+          </aside>
+        </section>
+
+        <section id="weekView" class="hidden">
+          <div class="week-heading"><div><p class="eyebrow">SEU PROGRESSO</p><h2>Resumo da semana</h2><p class="subheading">Uma visão das últimas sete noites; as médias usam noites preenchidas.</p></div><span id="weekCount" class="count-pill"></span></div>
+          <div class="metrics-grid">
+            <article class="metric-card"><span class="metric-icon">▱</span><span class="metric-label">Tempo médio na cama</span><strong id="avgBed">—</strong></article>
+            <article class="metric-card"><span class="metric-icon">☾</span><span class="metric-label">Tempo médio dormindo</span><strong id="avgSleep">—</strong></article>
+            <article class="metric-card metric-highlight"><span class="metric-icon">◉</span><span class="metric-label">Eficiência média</span><strong id="avgEfficiency">—</strong><small>Tempo dormindo ÷ tempo na cama</small></article>
+          </div>
+          <div class="panel chart-panel"><div class="chart-title"><div><h3>Horas dormidas por noite</h3><p>Estimativa feita com suas anotações</p></div><span class="chart-key"><i></i> Sono</span></div><div id="weekChart" class="week-chart"></div></div>
+          <section class="panel history-panel" aria-labelledby="historyTitle"><div class="chart-title"><div><h3 id="historyTitle">Últimos registros</h3><p>Suas 28 noites registradas mais recentes</p></div></div><p id="historyEmpty" class="week-empty hidden">Suas noites registradas aparecerão aqui.</p><ul id="historyList" class="history-list"></ul></section>
+          <div class="panel note-panel"><span class="note-icon">☼</span><p>Use essas anotações para observar tendências ao longo das semanas. Elas não substituem uma avaliação profissional.</p></div>
+          <button id="backToDiary" class="button button-outline" type="button">← Voltar ao diário</button>
+        </section>
+
+        <section id="planView" class="hidden">
+          <div class="week-heading"><div><p class="eyebrow">GUIA PASSO A PASSO</p><h2>Plano de 4 semanas</h2><p class="subheading">Seu diário continua disponível em todas as etapas.</p></div></div>
+          <section id="programSetup" class="panel program-panel">
+            <p class="eyebrow">ANTES DE COMEÇAR</p>
+            <h3>Vamos conferir se este plano é adequado para você.</h3>
+            <p class="program-copy">O guia recomenda conversar com um profissional antes de calcular ou ajustar sua janela se algum item abaixo se aplica.</p>
+            <fieldset class="safety-list">
+              <legend>Marque tudo o que vale para você</legend>
+              <label><input type="checkbox" name="safety" value="unintended_sleep_or_high_risk_work"><span>Adormeço sem querer durante o dia, dirijo ou trabalho com máquinas/atividade de risco.</span></label>
+              <label><input type="checkbox" name="safety" value="snoring_or_gasping"><span>Tenho ronco alto, pausas na respiração observadas ou acordo engasgando.</span></label>
+              <label><input type="checkbox" name="safety" value="restless_legs_pain_or_new_medicine"><span>Tenho vontade forte de mexer as pernas à noite, dor ou comecei remédio que afeta o sono.</span></label>
+              <label><input type="checkbox" name="safety" value="bipolar_epilepsy_pregnancy_or_severe_distress"><span>Tenho transtorno bipolar, epilepsia/convulsões, estou grávida ou passo por tristeza/ansiedade muito fortes.</span></label>
+              <label><input type="checkbox" name="safety" value="age_65_or_fall_risk"><span>Tenho 65 anos ou mais e histórico ou risco de quedas.</span></label>
+              <label><input type="checkbox" name="safety" value="shift_work_night_care_or_late_sleep"><span>Trabalho em turnos/noite, cuido de alguém à noite ou só consigo dormir muito tarde.</span></label>
+              <label><input type="checkbox" name="safety" value="planning_to_change_sleep_medicine"><span>Pretendo começar, parar ou mudar a dose de um remédio para dormir.</span></label>
+            </fieldset>
+            <div class="program-assessment">
+              <h4>Autoavaliação inicial</h4>
+              <p>Escolha uma nota para cada frase: 0 = nada, 1 = pouco, 2 = bastante, 3 = muito.</p>
+              <div id="baselineAssessment" class="assessment-list"></div>
+            </div>
+            <p id="programStartDateHint" class="program-copy"></p>
+            <p class="urgent-note"><strong>Precisa de ajuda imediata?</strong> Se você pensa em se machucar ou está em crise emocional, procure ajuda agora. No Brasil, ligue 188 (CVV) ou procure uma emergência.</p>
+            <button id="startProgramButton" class="button button-primary" type="button">Salvar e começar a Semana 0</button>
+            <p id="programSetupMessage" class="form-message" role="status"></p>
+          </section>
+
+          <section id="programActive" class="panel program-panel hidden">
+            <div class="program-week-head"><div><p class="eyebrow" id="programWeekNumber"></p><h3 id="programWeekTitle"></h3><p id="programWeekDescription" class="program-copy"></p></div><span id="programWeekProgress" class="count-pill"></span></div>
+            <div id="programSafetyNotice" class="safety-warning hidden"></div>
+            <div class="program-tools">
+              <label class="field"><span>Horário fixo para acordar</span><input id="fixedWakeTime" type="time"></label>
+              <button id="saveWakeTime" class="button button-outline" type="button">Salvar horário</button>
+            </div>
+            <div id="windowCard" class="window-card hidden">
+              <div><p class="eyebrow">JANELA DE SONO</p><h4 id="windowResult"></h4><p id="windowExplanation" class="program-copy"></p></div>
+              <button id="calculateWindow" class="button button-primary" type="button">Calcular minha janela</button>
+            </div>
+            <div id="programRules" class="program-rules hidden">
+              <h4>Regras da cama do guia</h4>
+              <ol><li>Deite só quando estiver com sono.</li><li>Se estiver acordado e sem sono, levante; volte quando os olhos pesarem.</li><li>Use a cama só para dormir e intimidade.</li><li>Evite cochilos durante o dia.</li><li>Vire o relógio e deixe o celular longe da cama.</li></ol>
+            </div>
+            <div id="weeklyReview" class="weekly-review hidden">
+              <h4>Revisão da semana</h4>
+              <p>Com sete noites registradas, o app calcula a eficiência e sugere o próximo passo do guia.</p>
+              <label class="field"><span>Como você se sentiu durante o dia nesta semana?</span><select id="daytimeFeeling"><option value="">Selecione</option><option value="better">Melhor</option><option value="same">Igual</option><option value="worse">Pior</option></select></label>
+              <button id="reviewWeekButton" class="button button-outline" type="button">Calcular revisão semanal</button>
+              <p id="weeklyReviewResult" class="program-copy" role="status"></p>
+              <button id="applyWindowButton" class="button button-primary hidden" type="button">Aplicar janela sugerida</button>
+            </div>
+            <div id="week4AssessmentPanel" class="program-assessment hidden">
+              <h4>Autoavaliação final</h4><p>Responda as mesmas cinco perguntas para comparar com o início.</p>
+              <div id="finalAssessment" class="assessment-list"></div>
+              <button id="saveFinalAssessment" class="button button-outline" type="button">Salvar comparação</button>
+              <p id="finalAssessmentResult" class="program-copy"></p>
+            </div>
+            <div class="program-actions"><p id="advanceWeekHint" class="program-copy" role="status"></p><p id="programMessage" class="form-message" role="status"></p><button id="advanceWeekButton" class="button button-primary" type="button">Concluir semana e avançar →</button></div>
+          </section>
+        </section>
+      </main>
+      <footer class="app-footer">DURMO · Registre com calma, uma noite de cada vez.</footer>
+    </div>
+
+    <script src="/sleep-math.js" defer></script>
+    <script src="/sleep-date.js" defer></script>
+    <script src="/app.js" defer></script>
+  </body>
+</html>

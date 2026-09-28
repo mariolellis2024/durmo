@@ -1,0 +1,10 @@
+{
+  "name": "DURMO",
+  "short_name": "DURMO",
+  "description": "Seu diário pessoal do sono",
+  "lang": "pt-BR",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7f3eb",
+  "theme_color": "#193047"
+}
