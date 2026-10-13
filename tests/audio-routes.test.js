@@ -3,6 +3,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
+const http = require('node:http');
 const express = require('express');
 const { createAudioRouter } = require('../audio-routes');
 
@@ -82,5 +83,69 @@ test('only catalogued files can be streamed', async () => {
   for (const file of ['manifest.json', 'other.m4a', '..%2Fmanifest.json']) {
     const response = await request(`/files/${file}`);
     assert.equal(response.status, 404);
+  }
+});
+
+test('client cancellation is quiet while file failures still reach error handling', { timeout: 10000 }, async () => {
+  const folder = fs.mkdtempSync(path.join(os.tmpdir(), 'durmo-audio-abort-'));
+  const file = path.join(folder, 'large.m4a');
+  const fd = fs.openSync(file, 'w');
+  fs.ftruncateSync(fd, 32 * 1024 * 1024);
+  fs.closeSync(fd);
+  fs.writeFileSync(path.join(folder, 'manifest.json'), JSON.stringify({ tracks: [{
+    id: '01', file: 'large.m4a', size: fs.statSync(file).size,
+  }] }));
+  const failures = [];
+  let complete;
+  const transferEnded = new Promise((resolve) => { complete = resolve; });
+  const app = express();
+  app.use((req, res, next) => {
+    const sendFile = res.sendFile;
+    res.sendFile = function (name, options, callback) {
+      if (req.headers['x-simulate-abort']) {
+        assert.equal(Boolean(req.aborted), false);
+        callback(Object.assign(new Error('Request aborted'), { code: 'ECONNABORTED' }));
+        return res.end();
+      }
+      return sendFile.call(this, name, options, (error) => {
+        callback(error);
+        complete({ code: error?.code, requestAborted: req.aborted });
+      });
+    };
+    next();
+  });
+  app.use(createAudioRouter(folder));
+  app.use((error, _req, res, _next) => {
+    failures.push(error);
+    if (!res.destroyed) res.status(500).end();
+  });
+  const local = await new Promise((resolve) => {
+    const listener = app.listen(0, '127.0.0.1', () => resolve(listener));
+  });
+  const url = `http://127.0.0.1:${local.address().port}/files/large.m4a`;
+  try {
+    await new Promise((resolve, reject) => {
+      const req = http.get(url, (res) => {
+        res.once('data', () => { res.destroy(); resolve(); });
+        res.on('error', reject);
+      });
+      req.on('error', reject);
+    });
+    const result = await transferEnded;
+    assert.ok(['ECONNABORTED', 'ECONNRESET', 'EPIPE'].includes(result.code));
+    assert.equal(failures.length, 0, failures.map((error) => error.stack).join('\n'));
+    const cancelled = await fetch(url, { headers: { 'x-simulate-abort': '1' } });
+    await cancelled.arrayBuffer();
+    assert.equal(failures.length, 0, failures.map((error) => error.stack).join('\n'));
+    fs.unlinkSync(file);
+    const missing = await fetch(url);
+    assert.equal(missing.status, 500);
+    await missing.arrayBuffer();
+    assert.equal(failures.length, 1);
+    assert.equal(failures[0].code, 'ENOENT');
+  } finally {
+    local.closeAllConnections();
+    await new Promise((resolve) => local.close(resolve));
+    fs.rmSync(folder, { recursive: true, force: true });
   }
 });

@@ -36,6 +36,9 @@ function createAudioRouter(directory = path.join(__dirname, 'media/audio')) {
         'X-Content-Type-Options': 'nosniff',
       },
     }, (error) => {
+      // A completed GET can have req.aborted=false even when the client
+      // closes the response stream (for example, after seeking or switching tracks).
+      if (['ECONNABORTED', 'ECONNRESET', 'EPIPE'].includes(error?.code)) return;
       if (error?.status === 416 && !res.headersSent) {
         res.set('Cache-Control', 'no-store');
         res.set('Content-Range', `bytes */${track.size}`);
