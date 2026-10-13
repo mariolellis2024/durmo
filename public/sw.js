@@ -1,9 +1,11 @@
-const CACHE_NAME = 'durmo-shell-v1';
+const CACHE_NAME = 'durmo-shell-v2';
 const APP_SHELL = [
   '/',
   '/index.html',
   '/styles.css',
   '/app.js',
+  '/audio-player.js',
+  '/audio-player.css',
   '/pwa.js',
   '/sleep-math.js',
   '/sleep-date.js',
@@ -31,6 +33,9 @@ self.addEventListener('fetch', (event) => {
   const request = event.request;
   const url = new URL(request.url);
   if (request.method !== 'GET' || url.origin !== self.location.origin || url.pathname.startsWith('/api/')) return;
+  // Media/range responses must bypass the shell cache: Cache.put rejects 206
+  // and eagerly cloning an audio response can download the whole recording.
+  if (request.destination === 'audio' || request.headers.has('range')) return;
 
   if (request.mode === 'navigate') {
     event.respondWith((async () => {

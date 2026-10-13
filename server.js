@@ -5,6 +5,7 @@ const express = require('express');
 const { Pool } = require('pg');
 const { calculateNight } = require('./public/sleep-math');
 const { isNotFutureDate, ageAtISODate } = require('./public/sleep-date');
+const { createAudioRouter } = require('./audio-routes');
 
 loadLocalEnv();
 
@@ -96,6 +97,11 @@ app.post('/api/logout', async (req, res) => {
 app.get('/api/me', requireUser, (req, res) => {
   res.json({ user: publicUser(req.user) });
 });
+
+app.use('/api/audio', (_req, res, next) => {
+  res.set('Cache-Control', 'no-store');
+  next();
+}, requireUser, createAudioRouter());
 
 app.put('/api/profile', requireUser, async (req, res) => {
   const firstName = String(req.body?.firstName || '').trim().replace(/\s+/g, ' ');

@@ -24,6 +24,24 @@ O service worker mantém os arquivos da interface disponíveis para abrir a estr
 
 O `easypanel-schema.json` cria o app DURMO com origem Git (`https://github.com/mariolellis2024/durmo.git`, branch `main`) e um PostgreSQL 16 no projeto EasyPanel em que você está. O formato segue a lista de serviços do schema funcional do Alanis: cada item tem `type` e `data`, sem `projectName` dentro de cada serviço. Não inclui domínio no schema; depois de criar os serviços, configure `app.durmo.com.br` no serviço `durmo`, apontando para a porta interna `3000`, com HTTPS. O projeto não precisa de MinIO. Antes de importar, substitua `DEFINIR_SENHA_FORTE_ANTES_DE_IMPORTAR` nas duas linhas pela mesma senha; não publique a senha no GitHub. O EasyPanel constrói o app a partir do repositório Git.
 
+## Áudios para relaxar
+
+A aba **Áudios para relaxar** oferece os dois áudios com 30 minutos cada. A repetição vem ativada e pode ser desligada. O player tem play/pausa, busca, avanço/retorno de 15 segundos e um controle compacto nas outras abas. Sair da conta encerra o som e libera o arquivo.
+
+Os arquivos entregues em `media/audio/` são AAC-LC estéreo, 44,1 kHz e 64 kb/s (cerca de 14,8 MB por áudio). Os originais em `audios/01.mp3` e `audios/02.mp3` são preservados e ignorados pelo Git. **Os M4A otimizados e o manifest devem acompanhar o deploy**; o servidor valida sua integridade de tamanho ao iniciar. Não há dependência de FFmpeg no servidor em produção.
+
+Para preparar novamente os arquivos, instale Python 3.11+ e FFmpeg/ffprobe e execute `npm run prepare:audio`. O script usa os primeiros 30 minutos e 8 segundos de cada original: mistura os últimos 8 segundos com os primeiros 8 e reposiciona essa emenda para produzir exatamente 30 minutos. Aplica também rampas de 30 ms nas bordas para reduzir estalos da codificação AAC. Mantém os canais esquerdo/direito, sem downmix, alteração de velocidade ou normalização. Os nomes incluem um hash do conteúdo; o manifest é substituído somente quando os dois arquivos estão prontos. Arquivos antigos só devem ser removidos depois de atualizar os clientes que ainda os usam.
+
+O catálogo `/api/audio` e os arquivos `/api/audio/files/:file` exigem a sessão existente. O servidor entrega `audio/mp4`, suporta HEAD e HTTP Range (206/416) e permite cache privado de URLs versionadas. O cabeçalho MP4 está no início (faststart). Nenhum áudio é pré-carregado na abertura da aba; o primeiro play inicia a transferência. O service worker não armazena respostas de áudio nem respostas parciais, evitando downloads integrais involuntários e erros de cache. O cache HTTP do navegador pode reaproveitar bytes nos loops; o reaproveitamento depende do navegador e do espaço disponível. Não é um download offline garantido.
+
+### Tela bloqueada e validação
+
+A reprodução usa **um único HTMLAudioElement persistente**, com `loop` nativo. O crossfade já está gravado no arquivo e não depende de timers, JavaScript em segundo plano ou Web Audio. Media Session integra título, capa, play/pausa, busca e parada aos controles do sistema nos navegadores compatíveis. `navigator.audioSession.type = 'playback'` é aplicado quando disponível. Não há autoplay: a primeira reprodução exige um toque. Trocar de seção ou ocultar a página não pausa o áudio.
+
+Testes automatizados: `npm test` verifica integridade/faststart dos arquivos e transmissão por ranges, além dos testes existentes. Foram exercitados no Chrome local: AAC real, play/pausa, busca, troca de áudio, repetição nativa, fim com repetição desativada, navegação entre abas, logout, cache e layout móvel. Uma conta local descartável foi criada e removida para essa verificação.
+
+**Validação pendente em aparelhos físicos antes de anunciar suporte confirmado:** no Safari do iPhone (aba e PWA instalada) e Chrome Android (aba e PWA), iniciar com fones, bloquear por alguns minutos, pausar/retomar na tela bloqueada e conferir a passagem do loop; testar também ligação recebida e perda/retorno de rede. Versões do sistema, economia de bateria e navegadores embutidos podem interromper reprodução. Não fechar/forçar a saída do aplicativo. Em navegadores de Instagram/WhatsApp, abrir no Safari ou Chrome. O teste em desktop não comprova o comportamento da tela bloqueada no telefone.
+
 ## Dados do app
 
 Cada conta tem seu próprio diário. O servidor aplica o filtro da conta ao consultar e salvar noites. O PIN não é armazenado em texto puro e a sessão fica vinculada ao banco local.

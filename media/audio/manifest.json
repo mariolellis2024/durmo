@@ -1,0 +1,36 @@
+{
+  "tracks": [
+    {
+      "id": "01",
+      "title": "Áudio 01",
+      "version": "71cd0ac21f2670ad",
+      "sha256": "71cd0ac21f2670ad666963bba3c8f6dde907d67914fffef8c2ef4e8185908f1b",
+      "duration": 1800.0,
+      "size": 14818229,
+      "originalSize": 343899269,
+      "codec": "AAC-LC",
+      "bitrate": 64000,
+      "sampleRate": 44100,
+      "channels": 2,
+      "file": "01.71cd0ac21f2670ad.m4a",
+      "crossfadeSeconds": 8,
+      "edgeFadeSeconds": 0.03
+    },
+    {
+      "id": "02",
+      "title": "Áudio 02",
+      "version": "f7291b0b0211478d",
+      "sha256": "f7291b0b0211478d7df26a090100f09a567f756e6b5c2cc5564809df867ada28",
+      "duration": 1800.0,
+      "size": 14796983,
+      "originalSize": 745167223,
+      "codec": "AAC-LC",
+      "bitrate": 64000,
+      "sampleRate": 44100,
+      "channels": 2,
+      "file": "02.f7291b0b0211478d.m4a",
+      "crossfadeSeconds": 8,
+      "edgeFadeSeconds": 0.03
+    }
+  ]
+}

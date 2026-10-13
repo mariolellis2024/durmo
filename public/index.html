@@ -13,6 +13,7 @@
     <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
     <link rel="manifest" href="/manifest.webmanifest">
     <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/audio-player.css">
     <title>DURMO</title>
   </head>
   <body>
@@ -104,7 +105,40 @@
           <button class="view-tab active" data-view="diary">Meu diário</button>
           <button class="view-tab" data-view="week">Resumo da semana</button>
           <button class="view-tab" data-view="plan">Plano de 4 semanas</button>
+          <button class="view-tab" data-view="audio">Áudios para relaxar</button>
         </nav>
+
+        <section id="audioView" class="hidden" aria-labelledby="audioHeading">
+          <div class="week-heading"><div><p class="eyebrow">SEU MOMENTO DE DESCANSO</p><h2 id="audioHeading">Dê uma pausa ao dia.</h2><p class="subheading">Escolha um áudio e acomode-se. Use fones de ouvido em volume baixo e confortável.</p></div></div>
+          <div class="audio-layout">
+            <section class="night-player" aria-label="Player de relaxamento">
+              <span class="audio-moon" aria-hidden="true">☾</span>
+              <p class="eyebrow">DURMO · RELAXAMENTO</p>
+              <h3 id="audioTitle">Escolha seu áudio</h3>
+              <p class="audio-caption">30 minutos para desacelerar, no seu ritmo.</p>
+              <div class="audio-progress">
+                <label class="audio-sr-only" for="audioSeek">Posição do áudio</label>
+                <input id="audioSeek" type="range" min="0" max="1800" value="0" step="1" disabled>
+                <div class="audio-times"><span id="audioElapsed">0:00</span><span id="audioDuration">30:00</span></div>
+              </div>
+              <div class="audio-controls">
+                <button id="audioBack" class="audio-skip" type="button" aria-label="Voltar 15 segundos" disabled>↶ <span>15s</span></button>
+                <button id="audioPlay" class="audio-play" type="button" disabled><span id="audioPlayIcon" aria-hidden="true">▶</span><span id="audioPlayLabel">Reproduzir</span></button>
+                <button id="audioForward" class="audio-skip" type="button" aria-label="Avançar 15 segundos" disabled>↷ <span>15s</span></button>
+              </div>
+              <button id="audioLoop" class="audio-loop" type="button" aria-pressed="true">↻ Repetição ativada</button>
+              <p class="audio-loop-help" id="audioLoopHelp">Ao terminar, o áudio recomeça com uma transição suave.</p>
+              <p id="audioStatus" class="audio-status" role="status" aria-live="polite"></p>
+            </section>
+            <aside class="audio-library">
+              <h3>Escolha seu momento</h3>
+              <div id="audioTracks" class="audio-tracks" aria-label="Áudios disponíveis"></div>
+              <button id="audioRetry" class="button button-outline hidden" type="button">Tentar carregar novamente</button>
+              <div class="audio-tip"><strong>Ouça com a tela apagada</strong><p>Dê o play e depois bloqueie a tela. Use os controles de áudio do telefone para pausar ou continuar. Mantenha o app aberto em segundo plano.</p><p>Se o áudio parar no navegador de outro aplicativo, abra o DURMO no Safari ou no Chrome.</p></div>
+              <p class="audio-connection">É necessário ter conexão com a internet para carregar os áudios.</p>
+            </aside>
+          </div>
+        </section>
 
         <section id="diaryView" class="content-grid">
           <form id="entryForm" class="panel diary-panel">
@@ -253,6 +287,12 @@
           </section>
         </section>
       </main>
+      <audio id="sleepAudio" preload="none" loop playsinline></audio>
+      <div id="audioMini" class="audio-mini hidden" role="region" aria-label="Áudio em reprodução">
+        <button id="audioMiniOpen" type="button"><span aria-hidden="true">☾</span><span><strong id="audioMiniTitle">DURMO</strong><small id="audioMiniState">Relaxamento</small></span></button>
+        <button id="audioMiniPlay" type="button" aria-label="Pausar áudio">Pausar</button>
+        <button id="audioStop" type="button" aria-label="Encerrar áudio">✕</button>
+      </div>
       <footer class="app-footer">DURMO · Registre com calma, uma noite de cada vez.</footer>
     </div>
 
@@ -275,6 +315,7 @@
 
     <script src="/sleep-math.js" defer></script>
     <script src="/sleep-date.js" defer></script>
+    <script src="/audio-player.js" defer></script>
     <script src="/app.js" defer></script>
     <script src="/pwa.js" defer></script>
   </body>

@@ -103,14 +103,18 @@ function setQuality(value) {
 }
 
 function setView(view) {
+  document.querySelector('.welcome-row').classList.toggle('hidden', view === 'audio');
   const isDiary = view === 'diary';
   const isWeek = view === 'week';
   document.querySelector('#diaryView').classList.toggle('hidden', !isDiary);
   document.querySelector('#weekView').classList.toggle('hidden', !isWeek);
   document.querySelector('#planView').classList.toggle('hidden', view !== 'plan');
+  document.querySelector('#audioView').classList.toggle('hidden', view !== 'audio');
+  window.DurmoAudio?.setVisible(view === 'audio');
   document.querySelectorAll('.view-tab').forEach((button) => button.classList.toggle('active', button.dataset.view === view));
   if (isWeek) renderWeek();
   if (view === 'plan') renderProgram();
+  if (view === 'audio') window.DurmoAudio?.load();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -331,6 +335,7 @@ async function enterApp() {
 }
 
 function showAuth() {
+  window.DurmoAudio?.reset();
   currentUser = null;
   currentProgram = null;
   appView.classList.add('hidden');
@@ -339,6 +344,7 @@ function showAuth() {
 }
 
 async function logout() {
+  window.DurmoAudio?.reset();
   await api('/api/logout', { method: 'POST' }).catch(() => {});
   entries = [];
   historyEntries = [];
